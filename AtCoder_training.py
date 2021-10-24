@@ -102,3 +102,42 @@ for i in range(1, 400):
 
 print(ans)
 # %%
+#ABC074 B
+N = int(input())
+K = int(input())
+x = list(map(int, input().split()))
+ans = 0
+
+for i in range(N):
+    ans += 2*min(abs(x[i]), abs(x[i]-K))
+
+print(ans)
+# %%
+#ABC068 B
+N = int(input())
+ans = 1
+max_count = 0
+for i in range(1, N+1):
+    count = 0
+    tmp = i
+    while tmp % 2 == 0:
+        tmp /= 2
+        count += 1
+    if max_count < count:
+        max_count = count
+        ans = i
+
+print(ans)
+# %%
+#ABC160 C
+K, N = map(int, input().split())
+A = list(map(int, input().split()))
+
+distance = A[0]+K-A[N-1]
+for i in range(N-1):
+    distance = max(distance, A[i+1]-A[i])
+
+print(K - distance)
+# %%
+#AGC014 C
+A, B, C = map(int, input().split())
