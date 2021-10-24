@@ -95,10 +95,10 @@ else:
 # %%
 #ABC086 B
 a, b = map(int, input().split())
+ans = 'No'
 for i in range(1, 400):
     if i**2 == int(str(a)+str(b)):
-        print('Yes')
-        exit()
-        
-print('No')
+        ans = 'Yes'
+
+print(ans)
 # %%
