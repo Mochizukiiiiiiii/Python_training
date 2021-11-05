@@ -683,7 +683,149 @@ else:
 for k in range(2, n+1):
     print(nodes[k].sign)
 # %%
+#ABC069 C
+N = int(input())
+a = list(map(int, input().split()))
+a_4 = [i for i in a if i%4 == 0]
+a_2 = [i for i in a if i%4 != 0 and i%2 == 0]
+
+if N%2 == 0:
+    if len(a_4)*2 + len(a_2) >= N:
+        print('Yes')
+    else:
+        print('No')
+
+else:
+    if len(a_4)*2 + 1 >= N:
+        print('Yes')
+    elif len(a_4)*2 + len(a_2) >= N:
+        print('Yes')
+    else:
+        print('No')
 # %%
-queue = deque()
-queue.append(nodes[1])
+#ABC069 D
+H, W = map(int, input().split())
+N = int(input())
+a = list(map(int, input().split()))
+paint_list = []
+for i in range(N):
+    paint_list += ([i+1]*a[i])
+
+def convert_1d_to_2d(l, cols):
+    return [l[i:i + cols] for i in range(0, len(l), cols)]
+
+painted = convert_1d_to_2d(paint_list, W)
+
+for i in range(H):
+    if i%2 != 0:
+        painted[i].reverse()
+        print(*painted[i])
+    if i%2 == 0:
+        print(*painted[i])
+# %%
+#ABC072 C
+from collections import Counter
+
+N = int(input())
+a = list(map(int, input().split()))
+l = []
+
+for i in range(N):
+    l.append(a[i]-1)
+    l.append(a[i])
+    l.append(a[i]+1)
+
+ll = Counter(l)
+print(ll.most_common()[0][1])
+# %%
+#ABC072 D
+N = int(input())
+p = list(map(int, input().split()))
+flag = []
+count = 0
+seq_count = 0
+
+for i in range(N):
+    if i == p[i]-1:
+        count += 1
+        flag.append(str(1))
+    else:
+        flag.append(str(0))
+
+flag_line = ''.join(flag)
+seq_count = flag_line.count('11')
+
+print(count-seq_count)
+# %%
+#ALDS_5_A
+n = int(input())
+A = list(map(int, input().split()))
+q = int(input())
+m = list(map(int, input().split()))
+sum_list = []
+
+for i in range(1<<n):
+    sum = 0
+    for j in range(n):
+        if (i>>j) & 1:
+           sum += A[j]
+    sum_list.append(sum)
+for i in range(q):
+    if m[i] in sum_list:
+        print('yes')
+    else:
+        print('no')
+# %%
+#第７回日本情報オリンピック 予選（過去問） E
+R, C = map(int, input().split())
+senbei = [list(map(int, input().split())) for i in range(R)]
+
+for i in range(1<<R):
+    for j in range(R):
+        if (i>>j) & 1:
+# %%
+#ABC022 B
+N = int(input())
+A = [int(input()) for i in range(N)]
+flower_flag = set()
+cnt = 0
+
+for i in range(N):
+    if A[i] in flower_flag:
+        cnt += 1
+    else:
+        flower_flag.add(A[i])
+
+print(cnt)
+# %%
+#ABC006 C
+import sys
+n = int(input())
+tri = [0, 0, 1]
+
+if n == 1 or n == 2:
+    print(0)
+    sys.exit(0)
+elif n == 3:
+    print(1)
+    sys.exit(0)
+else:
+    for i in range(3, n):
+        tri.append(tri[-3]+tri[-2]+tri[-1])
+        del tri[0]
+
+print(tri[-1]%10007)
+# %%
+#ABC146 B
+N = int(input())
+S = list(input())
+T = []
+alphabets = [chr(i) for i in range(65, 65+26)]
+alphabets *= 2
+alphabets_dict = dict(zip(alphabets[0:26], alphabets[N:N+26]))
+
+for i in range(len(S)):
+    T.append(alphabets_dict[S[i]])
+
+print(''.join(T)) 
 # %%
