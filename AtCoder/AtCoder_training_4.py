@@ -712,8 +712,50 @@ for _ in range(T):
   
   else:
     print('No')
+# %%
+#ITP_7_B
+#全探索
+flag = 1
 
+while flag:
+  n, x = map(int,input().split())
+  if n == 0 and x == 0:
+    flag = 0
+  else:
+    ans = 0
+    for i in range(1, n+1):
+      for j in range(i+1, n+1):
+        for k in range(j+1, n+1):
+          if i+j+k == x:
+            ans += 1
+    print(ans)
 # %%
-print(bin_A)
-print(bin_S)
+#ABC106 B
+#全探索
+N = int(input())
+ans = 0
+
+for i in range(1, N+1, 2):
+  cnt = 0
+  for j in range(1, i+1, 2):
+    if i%j == 0:
+      cnt += 1
+  if cnt == 8:
+    ans += 1
+
+print(ans)
 # %%
+#ABC122 B
+#全探索
+S = input()
+ans = 0
+std = 0
+ans = 0
+for l in S:
+  if l == 'A' or l == 'C' or l == 'T' or l == 'G':
+    std += 1
+  else:
+    ans = max(ans,std)
+    std = 0
+ans = max(ans,std)
+print(ans)
