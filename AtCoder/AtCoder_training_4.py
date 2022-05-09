@@ -1100,3 +1100,4 @@ if (T1, T2, T3) in ((S1, S2, S3), (S2, S3, S1), (S3, S1, S2)):
 else:
   print('No') 
 # %%
+# test
