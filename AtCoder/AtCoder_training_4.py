@@ -752,10 +752,351 @@ ans = 0
 std = 0
 ans = 0
 for l in S:
-  if l == 'A' or l == 'C' or l == 'T' or l == 'G':
+  if l in 'ACGT':
     std += 1
   else:
     ans = max(ans,std)
     std = 0
 ans = max(ans,std)
+
 print(ans)
+# %%
+#パ研杯2019 C
+#全探索
+N, M = map(int, input().split())
+A = [list(map(int, input().split())) for _ in range(N)]
+ans = 0
+
+for i in range(M):
+  for j in range(i+1, M):
+    cnt = 0
+    for k in range(N):
+      cnt += max(A[k][i], A[k][j])
+    ans = max(ans, cnt)
+
+print(ans)
+# %%
+#ABC095 C
+#全探索
+A, B, C, X, Y = map(int, input().split())
+
+N = max(X, Y)
+ans = float('inf')
+
+for i in range(N+1):
+  x = max(0, X-i)
+  y = max(0, Y-i)
+  
+  ans = min(ans, A*x+B*y+2*C*i)
+  
+print(ans)
+# %%
+#三井住友信託銀行プログラミングコンテスト2019 D
+#全探索
+N = int(input())
+S = input()
+ans = 0
+
+for i in range(10):
+  for j in range(10):
+    for k in range(10):
+      pin = str(i) + str(j) + str(k)
+      if S.find(pin[0]) == -1:
+        continue
+      S1 = S[S.find(pin[0])+1:]
+      if S1.find(pin[1]) == -1:
+        continue
+      S2 = S1[S1.find(pin[1])+1:]
+      if S2.find(pin[2]) == -1:
+        continue
+      ans += 1
+
+print(ans)
+# %%
+#ALDS1_5_A
+#ビット全探索
+n = int(input())
+A = list(map(int, input().split()))
+q = int(input())
+mi = list(map(int, input().split()))
+
+myset = set()
+
+for bit in range(1 << n):
+  cnt = 0
+  for i in range(n):
+    if bit & (1 << i):
+      cnt += A[i]
+  myset.add(cnt)
+
+for m in mi:
+  if m in myset:
+    print('yes')
+  else:
+    print('no')
+# %%
+#ABC239 C
+from collections import deque
+
+x1, y1, x2, y2 = map(int, input().split())
+set1 = set()
+set2 = set()
+
+Q1 = deque()
+Q1.append([x1, y1])
+x, y = Q1.popleft()
+for dx, dy in [(1, 2), (2, 1), (-1, 2), (-2, 1), (1, -2), (2, -1), (-1, -2), (-2, -1)]:
+  X, Y = x+dx, y+dy
+  Q1.append([X, Y])
+  set1.add(tuple([X, Y]))
+
+Q2 = deque()
+Q2.append([x2, y2])
+x, y = Q2.popleft()
+for dx, dy in [(1, 2), (2, 1), (-1, 2), (-2, 1), (1, -2), (2, -1), (-1, -2), (-2, -1)]:
+  X, Y = x+dx, y+dy
+  Q2.append([X, Y])
+  set2.add(tuple([X, Y]))
+
+if set1.isdisjoint(set2):
+  print('No')
+else:
+  print('Yes')
+# %%
+#ABC239 D
+#エラトステネスの篩
+A, B, C, D = map(int, input().split())
+
+prime = [True]*201
+prime[0] = [False]
+prime[1] = [False]
+for p in range(15):
+  if prime[p]:
+    for i in range(p*p, 201, p):
+      prime[i] = False
+
+for i in range(A, B+1):
+  if all(not prime[i+j] for j in range(C, D+1)):
+    print('Takahashi')
+    exit()
+
+print('Aoki')
+# %%
+#ABC239 E
+#DFS 再帰関数
+import sys
+
+readline = sys.stdin.readline
+sys.setrecursionlimit(10 ** 6)
+
+MAX_K = 20
+
+def dfs(u, p):
+  L[u].append(X[u])
+  for v in G[u]:
+    if v == p:
+      continue
+    dfs(v, u)
+    L[u].extend(L[v])
+  L[u].sort(reverse=True)
+  L[u] = L[u][:MAX_K]
+
+N, Q = map(int, input().split())
+X = [0] + list(map(int, input().split()))
+G = [[] for _ in range(N+1)]
+for _ in range(N-1):
+  a, b = map(int, input().split())
+  G[a].append(b)
+  G[b].append(a)
+L = [[] for _ in range(N+1)]
+dfs(1, 0)
+
+for _ in range(Q):
+  v, k = map(int, input().split())
+  print(L[v][k-1])
+# %%
+#ABC240 C
+#DP
+N, X = map(int, input().split())
+dp = [[False]*10001 for _ in range(N+1)]
+dp[0][0] = True
+
+for i in range(1, N+1):
+  a, b = map(int, input().split())
+  for j in range(0, 10001):
+    if dp[i-1][j]:
+      dp[i][j+a] = True
+      dp[i][j+b] = True
+
+if dp[-1][X]:
+  print('Yes')
+else:
+  print('No')
+# %%
+#ABC240 D
+from collections import deque
+
+N = int(input())
+a = deque(map(int, input().split()))
+ans = 0
+num_Q = deque()
+
+for _ in range(N):
+  num = a.popleft()
+  if ans == 0:
+    num_Q.append(num)
+    cnt_Q = deque([1])
+    ans = 1
+    print(ans)
+  
+  elif num != num_Q[-1]:
+    num_Q.append(num)
+    cnt_Q.append(1)
+    ans += 1
+    print(ans)
+  else:
+    if cnt_Q[-1] == num - 1:
+      num_Q.pop()
+      cnt_Q.pop()
+      ans -= (num - 1)
+      print(ans)
+    else:
+      tmp = cnt_Q.pop()
+      cnt_Q.append(tmp+1)
+      ans += 1
+      print(ans)
+      
+# %%
+#ABC241 C
+#全探索
+N = int(input())
+S = [[1 if c == "#" else 0 for c in input()] for _ in range(N)]
+pat = [(1, 0), (0, 1), (1, -1), (1, 1)]
+
+def judge(sy, sx, dy, dx):
+  y, x = sy, sx
+  cnt = 0
+  for _ in range(6):
+    if not (0 <= y < N and 0 <= x < N):
+      return False
+    cnt += S[y][x]
+    y += dy
+    x += dx
+  return cnt >= 4
+
+for y in range(N):
+  for x in range(N):
+    for dy, dx in pat:
+      if judge(y, x, dy, dx):
+        print('Yes')
+        exit()
+
+print('No')
+# %%
+#ABC242 C
+#DP
+
+MOD = 998244353
+N = int(input())
+
+dp = [[0] * 11 for _ in range(N + 1)]
+for i in range(1, 10):
+  dp[1][i] = 1
+
+for i in range(1, N):
+  for j in range(1, 10):
+    dp[i+1][j] = (dp[i][j - 1] + dp[i][j] + dp[i][j + 1]) % MOD
+
+print(sum(dp[N])%MOD)
+# %%
+#ABC243 C
+from collections import defaultdict
+INF = float('inf')
+flag = 0
+
+N = int(input())
+XY = [list(map(int, input().split())) for _ in range(N)]
+S = input()
+L_max = defaultdict(lambda: -INF)
+R_min = defaultdict(lambda: INF)
+
+for s, (x, y) in zip(S, XY):
+  if s == 'L':
+    L_max[y] = max(L_max[y], x)
+  else:
+    R_min[y] = min(R_min[y], x)
+    
+for y in L_max.keys():
+  if R_min[y] < L_max[y]:
+    flag = 1
+
+if flag:
+  print('Yes')
+else:
+  print('No')
+# %%
+#ABC243 D
+N, X = map(int, input().split())
+S = input()
+T = ['!']
+
+for s in S:
+  if s == 'U' and T[-1] in 'LR':
+    T.pop()
+  else:
+    T.append(s)
+
+ans = X
+for t in T[1:]:
+  if t == 'U':
+    ans //= 2
+  elif t == 'L':
+    ans *= 2
+  else:
+    ans *= 2
+    ans += 1
+
+print(ans)
+# %%
+#ABC243 D
+N, X = map(int, input().split())
+S = input()
+V = [*f'{X:b}']
+#V = [c for in bin(X)[2:]]
+#V = [*format(X, 'b')]
+
+for s in S:
+  if s == 'U':
+    V.pop()
+  elif s == 'L':
+    V += ['0']
+  else:
+    V += ['1']
+
+concat = lambda L: ''.join(L)
+Vs = concat(V)
+
+print(Vs)
+# %%
+#ABC244 C
+N = int(input())
+nums = set(range(1, 2*N+2))
+flag = 1
+
+while flag:
+  print(nums.pop(), flush=True)
+  A = int(input())
+  if A != 0:
+    nums.remove(A)
+  else:
+    flag = 0
+# %%
+#ABC244 D
+S1, S2, S3 = map(str, input().split())
+T1, T2, T3 = map(str, input().split())
+
+if (T1, T2, T3) in ((S1, S2, S3), (S2, S3, S1), (S3, S1, S2)):
+  print('Yes')
+else:
+  print('No') 
+# %%
